@@ -12,12 +12,18 @@ BOT_NAME = "book"
 SPIDER_MODULES = ["book.spiders"]
 NEWSPIDER_MODULE = "book.spiders"
 
+FEEDS = {
+    'data.csv': {'format': 'csv', 'overwrite': True}
+}
+
+SCRAPEOPS_API_KEY = 'de331daa-f7d9-4692-bb91-945f4973587b'
+SCRAPEOPS_NUM_RESULTS = 50
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = "book (+http://www.yourdomain.com)"
 
 # Obey robots.txt rules
-ROBOTSTXT_OBEY = True
+ROBOTSTXT_OBEY = False
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 #CONCURRENT_REQUESTS = 32
@@ -50,9 +56,10 @@ ROBOTSTXT_OBEY = True
 
 # Enable or disable downloader middlewares
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
-#DOWNLOADER_MIDDLEWARES = {
+DOWNLOADER_MIDDLEWARES = {
 #    "book.middlewares.BookDownloaderMiddleware": 543,
-#}
+   "book.middlewares.ScrapeOpsFakeBrowserHeaderAgentMiddleware": 400,
+}
 
 # Enable or disable extensions
 # See https://docs.scrapy.org/en/latest/topics/extensions.html
@@ -62,9 +69,10 @@ ROBOTSTXT_OBEY = True
 
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
-#ITEM_PIPELINES = {
-#    "book.pipelines.BookPipeline": 300,
-#}
+ITEM_PIPELINES = {
+   "book.pipelines.BookPipeline": 300,
+   "book.pipelines.SaveToMongoDBPipeline": 400,
+}
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/autothrottle.html
